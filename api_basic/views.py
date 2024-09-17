@@ -10,6 +10,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework.authentication import SessionAuthentication, BaseAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class GenereicAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins .CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin):
@@ -17,6 +19,9 @@ class GenereicAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins .Cr
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
     lookup_field = 'id'
+    
+    authentication_classes = [SessionAuthentication, BaseAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get(self, request, id=None):
         if id:
